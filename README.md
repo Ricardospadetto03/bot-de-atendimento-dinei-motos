@@ -66,7 +66,7 @@ Um bot conectado ao WhatsApp da oficina que:
 
 ### Painel web
 Calendário mensal com cores (livre, revisão, bloqueado, fechado), detalhes do dia com botões para chamar o
-cliente no WhatsApp ou ligar, lista das próximas revisões, atualização em tempo real, login com usuário e senha,
+cliente no WhatsApp ou ligar, lista das próximas revisões, atualização em tempo real, login com a conta Google da oficina,
 modo escuro e instalação na tela inicial do celular.
 
 ---

@@ -1,6 +1,6 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js';
 import {
-  getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut,
+  getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signInWithRedirect, signOut,
 } from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js';
 import {
   getFirestore, collection, query, where, onSnapshot,
@@ -16,17 +16,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const DOMINIO_DOS_USUARIOS = '@motos.com';
-const usuarioParaEmail = (usuario) =>
-  usuario.includes('@') ? usuario : `${usuario}${DOMINIO_DOS_USUARIOS}`;
-
-const CHAVE_ULTIMO_USUARIO = 'agenda-dinei:ultimo-usuario';
-function lembrarUsuario(usuario) {
-  try { localStorage.setItem(CHAVE_ULTIMO_USUARIO, usuario); } catch {  }
-}
-function ultimoUsuario() {
-  try { return localStorage.getItem(CHAVE_ULTIMO_USUARIO) || ''; } catch { return ''; }
-}
+const provedorGoogle = new GoogleAuthProvider();
+provedorGoogle.setCustomParameters({ prompt: 'select_account' });
 
 const $ = (id) => document.getElementById(id);
 
@@ -298,7 +289,7 @@ function marcarConexao(ok) {
 function erroDoBanco(erro, usuario) {
   console.error(erro);
   if (erro.code === 'permission-denied') {
-    $('email-sem-acesso').textContent = (usuario.email || 'outro usuário').replace(DOMINIO_DOS_USUARIOS, '');
+    $('email-sem-acesso').textContent = usuario.email || 'outra conta';
     mostrarTela('sem-acesso');
     return;
   }
@@ -330,66 +321,30 @@ function mostrarTela(nome) {
   }
 }
 
-function mostrarErroLogin(mensagem, campo) {
+function mostrarErroLogin(mensagem) {
   $('erro-login').textContent = mensagem;
   $('erro-login').hidden = false;
-  if (campo) {
-    campo.classList.add('com-erro');
-    campo.focus();
-  }
-  const form = $('form-login');
-  form.classList.remove('tremer');
-  void form.offsetWidth;
-  form.classList.add('tremer');
   if (navigator.vibrate) navigator.vibrate([30, 40, 30]);
 }
 
-$('mostrar-senha').addEventListener('click', () => {
-  const campo = $('campo-senha');
-  const mostrando = campo.type === 'text';
-  campo.type = mostrando ? 'password' : 'text';
-  $('mostrar-senha').classList.toggle('ligado', !mostrando);
-  $('mostrar-senha').setAttribute('aria-label', mostrando ? 'Mostrar a senha' : 'Esconder a senha');
-});
-
-for (const id of ['campo-usuario', 'campo-senha']) {
-  $(id).addEventListener('input', () => {
-    $(id).classList.remove('com-erro');
-    $('erro-login').hidden = true;
-  });
-}
-
-$('form-login').addEventListener('submit', async (evento) => {
-  evento.preventDefault();
+$('botao-entrar').addEventListener('click', async () => {
   vibrar();
   $('erro-login').hidden = true;
-
-  const usuario = $('campo-usuario').value.trim().toLowerCase();
-  const senha = $('campo-senha').value;
-  if (!usuario) return mostrarErroLogin('Digite o seu usuário.', $('campo-usuario'));
-  if (!senha) return mostrarErroLogin('Digite a sua senha.', $('campo-senha'));
-
-  const botao = $('botao-entrar');
-  botao.disabled = true;
-  botao.textContent = 'Entrando...';
   try {
-    await signInWithEmailAndPassword(auth, usuarioParaEmail(usuario), senha);
-    lembrarUsuario(usuario);
-    $('campo-senha').value = '';
+    await signInWithPopup(auth, provedorGoogle);
   } catch (erro) {
+    if (erro.code === 'auth/popup-blocked' || erro.code === 'auth/operation-not-supported-in-this-environment') {
+      await signInWithRedirect(auth, provedorGoogle);
+      return;
+    }
+    if (erro.code === 'auth/popup-closed-by-user' || erro.code === 'auth/cancelled-popup-request') return;
     console.error(erro.code);
     const mensagens = {
-      'auth/invalid-credential': 'Usuário ou senha incorretos. Confira e tente de novo.',
-      'auth/wrong-password': 'Senha incorreta. Confira e tente de novo.',
-      'auth/user-not-found': 'Usuário não encontrado. Confira e tente de novo.',
-      'auth/invalid-email': 'Esse usuário não existe. Confira e tente de novo.',
-      'auth/too-many-requests': 'Muitas tentativas seguidas. Espere alguns minutos e tente de novo.',
       'auth/network-request-failed': 'Sem internet. Confira a conexão e tente de novo.',
+      'auth/admin-restricted-operation': 'Esta conta não tem permissão para entrar. Use a conta Google da oficina.',
+      'auth/too-many-requests': 'Muitas tentativas seguidas. Espere alguns minutos e tente de novo.',
     };
-    mostrarErroLogin(mensagens[erro.code] || 'Não consegui entrar. Tente de novo.', $('campo-senha'));
-  } finally {
-    botao.disabled = false;
-    botao.textContent = 'Entrar';
+    mostrarErroLogin(mensagens[erro.code] || 'Não consegui entrar. Tente de novo.');
   }
 });
 
@@ -412,11 +367,6 @@ setInterval(() => {
 onAuthStateChanged(auth, (usuario) => {
   if (!usuario) {
     mostrarTela('login');
-    const lembrado = ultimoUsuario();
-    if (lembrado && !$('campo-usuario').value) {
-      $('campo-usuario').value = lembrado;
-      $('campo-senha').focus();
-    }
     return;
   }
   $('saudacao').textContent = saudacao();

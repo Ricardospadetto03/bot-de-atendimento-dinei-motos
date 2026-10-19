@@ -4,10 +4,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     function ehDono() {
-      return request.auth != null && request.auth.uid in [
-        'Dep0YzekafRdmGk5c5ceVRuirBB2',
-        'JzHKPrhCNNgqSjnOgTdW4p4lu3X2'
-      ];
+      return request.auth != null && request.auth.uid == 'JzHKPrhCNNgqSjnOgTdW4p4lu3X2';
     }
 
     match /{documento=**} {
