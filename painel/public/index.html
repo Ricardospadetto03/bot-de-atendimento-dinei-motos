@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f2a5c">
+  <title>Agenda Dinei Motos</title>
+  <link rel="icon" href="icone.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Agenda Dinei">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+  <section id="tela-carregando" class="tela-cheia">
+    <div class="logo-animado">🏍️</div>
+    <p class="aviso-claro">Abrindo a agenda...</p>
+  </section>
+
+  <section id="tela-login" class="tela-cheia" hidden>
+    <div class="logo-animado">🏍️</div>
+    <h1 class="titulo-login">Agenda<br><span>Dinei Motos</span></h1>
+
+    <form id="form-login" class="form-login" autocomplete="on" novalidate>
+      <label class="campo">
+        <span class="campo-rotulo">Usuário</span>
+        <input id="campo-usuario" name="username" type="text" autocomplete="username"
+               autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="dinei">
+      </label>
+      <label class="campo">
+        <span class="campo-rotulo">Senha</span>
+        <span class="senha-caixa">
+          <input id="campo-senha" name="password" type="password" autocomplete="current-password"
+                 placeholder="••••••••">
+          <button type="button" id="mostrar-senha" class="olho" aria-label="Mostrar a senha">👁️</button>
+        </span>
+      </label>
+      <p id="erro-login" class="erro" hidden></p>
+      <button type="submit" id="botao-entrar" class="botao-entrar">Entrar</button>
+    </form>
+    <p class="dica">Só precisa entrar uma vez neste celular.</p>
+  </section>
+
+  <section id="tela-sem-acesso" class="tela-cheia" hidden>
+    <div class="logo-grande">🔒</div>
+    <h2>Este usuário não tem acesso</h2>
+    <p class="aviso-claro">Você entrou como <strong id="email-sem-acesso"></strong>.<br>
+      Saia e entre com o usuário da oficina.</p>
+    <button class="botao-entrar botao-sair-grande">Sair e entrar de novo</button>
+  </section>
+
+  <main id="tela-agenda" hidden>
+    <header class="cabecalho">
+      <div class="cabecalho-linha">
+        <div>
+          <p class="cabecalho-pequeno" id="data-de-hoje"></p>
+          <h1 class="cabecalho-titulo"><span id="saudacao"></span>, <span id="nome-usuario"></span> 👋</h1>
+        </div>
+        <span id="ao-vivo" class="ao-vivo" title="A agenda se atualiza sozinha">
+          <span class="ponto"></span><span class="ao-vivo-texto">Ao vivo</span>
+        </span>
+      </div>
+
+      <div class="resumo">
+        <button id="cartao-proxima" class="cartao-resumo cartao-proxima">
+          <span class="rotulo">Próxima revisão</span>
+          <span id="proxima-quando" class="valor">—</span>
+          <span id="proxima-quem" class="detalhe">Nenhuma marcada</span>
+        </button>
+        <div class="cartao-resumo cartao-anel">
+          <svg viewBox="0 0 120 120" class="anel" aria-hidden="true">
+            <circle cx="60" cy="60" r="50" class="anel-fundo"/>
+            <circle cx="60" cy="60" r="50" class="anel-valor" id="anel-valor"/>
+          </svg>
+          <div class="anel-texto">
+            <span id="anel-numero" class="valor">0</span>
+            <span id="anel-legenda" class="detalhe">revisões</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="cartao calendario" aria-label="Calendário">
+      <div class="mes-barra">
+        <button id="mes-anterior" class="botao-redondo" aria-label="Mês anterior">‹</button>
+        <div class="mes-titulo">
+          <span id="mes-nome"></span>
+          <button id="botao-hoje" class="botao-hoje" hidden>Voltar para hoje</button>
+        </div>
+        <button id="mes-seguinte" class="botao-redondo" aria-label="Próximo mês">›</button>
+      </div>
+
+      <div class="semana" aria-hidden="true">
+        <span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span>
+      </div>
+      <div id="grade" class="grade"></div>
+
+      <div class="legenda">
+        <span><i class="bolinha livre"></i>Livre</span>
+        <span><i class="bolinha revisao"></i>Revisão</span>
+        <span><i class="bolinha bloqueado"></i>Bloqueado</span>
+        <span><i class="bolinha fechado"></i>Fechado</span>
+      </div>
+      <p class="dica dica-arrastar">Toque num dia para ver os detalhes. Arraste para o lado para trocar de mês.</p>
+    </section>
+
+    <section class="cartao">
+      <h2 class="titulo-secao">🗓️ Próximas revisões</h2>
+      <div id="lista-proximas" class="lista"></div>
+    </section>
+
+    <button id="botao-sair" class="botao-discreto">Sair</button>
+  </main>
+
+  <div id="fundo-folha" class="fundo-folha" hidden></div>
+  <aside id="folha" class="folha" aria-modal="true" role="dialog" hidden>
+    <div class="folha-alca" aria-hidden="true"></div>
+    <button id="fechar-folha" class="fechar-folha" aria-label="Fechar">✕</button>
+    <div id="folha-conteudo"></div>
+  </aside>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

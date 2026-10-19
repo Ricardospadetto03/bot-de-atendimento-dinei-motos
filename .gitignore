@@ -1,0 +1,11 @@
+node_modules/
+
+firebase-key.json
+.env
+sessao-whatsapp/
+bot-ligado.trava
+
+.firebase/
+*.log
+
+CLAUDE.md

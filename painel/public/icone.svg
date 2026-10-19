@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="fundo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2048b8"/>
+      <stop offset="0.55" stop-color="#0f2a5c"/>
+      <stop offset="1" stop-color="#3b2aa8"/>
+    </linearGradient>
+    <radialGradient id="brilho" cx="0.18" cy="0.12" r="0.65">
+      <stop offset="0" stop-color="#f97316" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#f97316" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="faixa" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fdba74"/>
+      <stop offset="1" stop-color="#f97316"/>
+    </linearGradient>
+    <filter id="sombra" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#020617" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" fill="url(#fundo)"/>
+  <rect width="512" height="512" fill="url(#brilho)"/>
+
+  <g filter="url(#sombra)">
+    <rect x="106" y="126" width="300" height="276" rx="40" fill="#ffffff"/>
+    <path d="M106 166a40 40 0 0 1 40-40h220a40 40 0 0 1 40 40v38H106z" fill="url(#faixa)"/>
+  </g>
+
+  <rect x="172" y="98" width="26" height="62" rx="13" fill="#e5e7eb"/>
+  <rect x="314" y="98" width="26" height="62" rx="13" fill="#e5e7eb"/>
+  <rect x="172" y="98" width="26" height="26" rx="13" fill="#ffffff"/>
+  <rect x="314" y="98" width="26" height="26" rx="13" fill="#ffffff"/>
+
+  <g fill="#dbeafe">
+    <circle cx="150" cy="236" r="9"/>
+    <circle cx="362" cy="236" r="9"/>
+  </g>
+
+  <path d="M244 318 L196 304" stroke="#94a3b8" stroke-width="12" stroke-linecap="round"/>
+  <g fill="none" stroke="#0f2a5c" stroke-width="20">
+    <circle cx="184" cy="330" r="36"/>
+    <circle cx="330" cy="330" r="36"/>
+  </g>
+  <g fill="none" stroke="#cbd5e1" stroke-width="4">
+    <circle cx="184" cy="330" r="22"/>
+    <circle cx="330" cy="330" r="22"/>
+  </g>
+  <circle cx="184" cy="330" r="9" fill="#f97316"/>
+  <circle cx="330" cy="330" r="9" fill="#f97316"/>
+  <path d="M298 294 A 46 46 0 0 1 366 300" fill="none" stroke="#2563eb" stroke-width="10" stroke-linecap="round"/>
+  <g fill="none" stroke="#0f2a5c" stroke-width="13" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M184 330 L238 320"/>
+    <path d="M184 330 L214 276"/>
+    <path d="M330 330 L304 252"/>
+    <path d="M304 252 L282 238"/>
+  </g>
+  <rect x="230" y="282" width="58" height="44" rx="12" fill="#334155"/>
+  <g stroke="#64748b" stroke-width="4" stroke-linecap="round">
+    <path d="M240 294 H278"/>
+    <path d="M240 304 H278"/>
+    <path d="M240 314 H278"/>
+  </g>
+  <rect x="196" y="258" width="66" height="22" rx="11" fill="#f97316"/>
+  <path d="M250 284 C 252 254, 292 246, 306 262 L 300 286 Z" fill="#2563eb"/>
+  <path d="M262 266 C 270 258, 284 256, 292 262" fill="none" stroke="#93c5fd" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="314" cy="268" r="10" fill="#facc15" stroke="#0f2a5c" stroke-width="4"/>
+
+  <g>
+    <circle cx="368" cy="364" r="46" fill="#16a34a" stroke="#ffffff" stroke-width="10"/>
+    <path d="M348 365 L362 380 L389 350" fill="none" stroke="#ffffff" stroke-width="13"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
